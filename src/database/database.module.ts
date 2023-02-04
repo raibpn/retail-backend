@@ -1,13 +1,6 @@
 import { Module } from '@nestjs/common';
-import { Connection } from 'typeorm';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import * as ormconfig from '../../ormconfig';
 
-@Module({
-  imports: [TypeOrmModule.forRoot()],
-  exports: [],
-})
-export class DatabaseModule {
-  constructor(connection: Connection) {
-    if (connection.isConnected) console.log('DB conndected successfully');
-  }
-}
+@Module({ imports: [TypeOrmModule.forRoot(ormconfig)] })
+export class DatabaseModule {}
