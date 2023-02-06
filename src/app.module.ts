@@ -3,16 +3,14 @@ import { ConfigModule } from '@nestjs/config';
 import { GraphQLModule } from '@nestjs/graphql';
 import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
 // import { DatabaseModule } from './database/database.module';
+import { MongooseModule } from '@nestjs/mongoose';
 import { ProductModule } from './product/product.module';
 
 @Module({
   imports: [
     ConfigModule.forRoot(),
     ProductModule,
-    GraphQLModule.forRoot<ApolloDriverConfig>({
-      driver: ApolloDriver,
-      autoSchemaFile: false,
-    }),
+    MongooseModule.forRoot(`${process.env.MONGO_URI}`),
   ],
   controllers: [],
   providers: [],

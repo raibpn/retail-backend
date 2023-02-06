@@ -1,7 +1,7 @@
 import { Controller } from '@nestjs/common';
 import { Body, Get, Param, Post, Req, Res } from '@nestjs/common/decorators';
 import { Request, Response } from 'express';
-import { CreateProductDto } from 'src/product/dtos/CreateProduct.dto';
+import { CreateProductDto } from 'src/product/dtos/product.schema';
 
 @Controller('product')
 export class ProductController {
