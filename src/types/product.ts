@@ -1,11 +1,9 @@
 import { Document } from 'mongoose';
-import { User } from './user';
 
-export interface Product extends Document {
-  owner: User;
+export interface Product {
+  id: string;
   title: string;
   description: string;
-  image: string;
   price: number;
   createdAt: Date;
 }

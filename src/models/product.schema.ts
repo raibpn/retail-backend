@@ -1,26 +1,18 @@
 import * as mongoose from 'mongoose';
 
 export const ProductSchema = new mongoose.Schema({
-  owner: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: 'User',
+  title: {
+    type: String,
+    required: true,
   },
-  totalPrice: {
+  description: {
+    type: String,
+    required: true,
+  },
+  price: {
     type: Number,
-    default: 0,
+    required: true,
   },
-  products: [
-    {
-      product: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'Product',
-      },
-      quantity: {
-        type: Number,
-        default: 0,
-      },
-    },
-  ],
   createdAt: {
     type: Date,
     default: Date.now,

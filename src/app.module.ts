@@ -10,7 +10,7 @@ import { ProductModule } from './product/product.module';
   imports: [
     ConfigModule.forRoot(),
     ProductModule,
-    //MongooseModule.forRoot(`${process.env.MONGO_URI}`),
+    MongooseModule.forRoot(`${process.env.MONGO_URI}`),
   ],
   controllers: [],
   providers: [],
