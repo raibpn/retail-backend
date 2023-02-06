@@ -5,8 +5,8 @@ import dotenv from 'dotenv';
 dotenv.config();
 
 const connectDB = new DataSource({
-  type: 'postgres',
-  url: process.env.DATABASE_URI,
+  type: 'mongodb',
+  url: process.env.MONGO_URI,
   logging: false,
   synchronize: true,
   entities: ['./src/Entities/**/*.ts'],
