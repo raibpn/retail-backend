@@ -2,7 +2,6 @@ import { Injectable, NotFoundException } from '@nestjs/common';
 import { Product } from 'src/types/product';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
-import { ProductSchema } from 'src/models/product.schema';
 
 @Injectable()
 export class ProductService {
@@ -18,8 +17,9 @@ export class ProductService {
   //   this.products.push(newProduct);
   //   return prodId;
   // }
-  createProduct() {
-    return 'create product';
+  createProduct(product: Product) {
+    return this.createProduct();
+    // return 'create product';
   }
   getAllProducts() {
     return 'All Products';

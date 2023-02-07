@@ -1,10 +1,20 @@
 version: '3.8'
 
-mongo:
-  image: 'mongo:4.2.16-bionic'
-  ports: -"27017:27017"
-  environment:
-    MONGO_INITDB_ROOT: logs
-    MONGO_INITDB_ROOT_USERNAME: admin
-    MONGO_INITDB_ROOT_PASSWORD: password
-  volumes: -./db-data/mongo/:/data/db
+services:
+  local-mongodb:
+    image: 'mongo:4.2.16-bionic'
+    environment:
+      MONGO_INITDB_ROOT: logs
+      MONGO_INITDB_ROOT_USERNAME: admin
+      MONGO_INITDB_ROOT_PASSWORD: password
+    ports:
+      - 27017:27017
+
+  # prod-db:
+  #   image: 'mongo:4.2.16-bionic'
+  #   environment:
+  #     MONGO_INITDB_ROOT: logs
+  #     MONGO_INITDB_ROOT_USERNAME: admin
+  #     MONGO_INITDB_ROOT_PASSWORD: password
+  #   ports:
+  #     - { MONGO_URI }
