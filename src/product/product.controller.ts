@@ -1,7 +1,8 @@
 import { Controller } from '@nestjs/common';
 import { Body, Get, Param, Post, Req, Res } from '@nestjs/common/decorators';
-import { Request, Response } from 'express';
 import { ProductService } from './product.service';
+import { Product } from 'src/types/product';
+
 // import { CreateProductDto } from 'src/product/dtos/product.schema';
 
 @Controller('product')
@@ -19,7 +20,7 @@ export class ProductController {
   }
 
   @Post()
-  createProduct() {
-    return this.productService.createProduct();
+  createProduct(@Param('product') product: Product) {
+    return this.productService.createProduct(product);
   }
 }

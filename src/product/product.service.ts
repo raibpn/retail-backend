@@ -11,14 +11,8 @@ export class ProductService {
     @InjectModel('Product') private readonly productModel: Model<Product>,
   ) {}
 
-  // insertProduct(title: string, desc: string, price: number, createdAt: Date) {
-  //   const prodId = Math.random().toString();
-  //   const newProduct = new this.productModel(prodId, title);
-  //   this.products.push(newProduct);
-  //   return prodId;
-  // }
   createProduct(product: Product) {
-    return this.createProduct();
+    return this.createProduct(product);
     // return 'create product';
   }
   getAllProducts() {
@@ -26,6 +20,6 @@ export class ProductService {
   }
 
   getProductById(id: String) {
-    return 'Product with string';
+    return `Product with string ${id}`;
   }
 }
