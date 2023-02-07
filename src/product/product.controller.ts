@@ -9,19 +9,17 @@ export class ProductController {
   constructor(private productService: ProductService) {}
 
   @Get()
-  getProduct() {
-    return { name: 'pant', price: '200dkk' };
+  getAllProduct() {
+    return this.productService.getAllProducts;
   }
-
-  // @Post()
-  // createProduct(@Body() productData: CreateProductDto) {
-  //   console.log(productData);
-  //   return {};
-  // }
 
   @Get(':id')
   getProductById(@Param('id') id: string) {
-    console.log(id);
-    return id;
+    return this.productService.getProductById(id);
+  }
+
+  @Post()
+  createProduct() {
+    return this.productService.createProduct();
   }
 }
