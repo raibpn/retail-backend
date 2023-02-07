@@ -1,5 +1,14 @@
 import { Controller } from '@nestjs/common';
-import { Body, Get, Param, Post, Req, Res } from '@nestjs/common/decorators';
+import {
+  Body,
+  Delete,
+  Get,
+  Param,
+  Post,
+  Put,
+  Req,
+  Res,
+} from '@nestjs/common/decorators';
 import { ProductService } from './product.service';
 import { Product } from 'src/types/product';
 
@@ -23,4 +32,10 @@ export class ProductController {
   createProduct(@Param('product') product: Product) {
     return this.productService.createProduct(product);
   }
+
+  @Put()
+  update() {}
+
+  @Delete()
+  delete() {}
 }
