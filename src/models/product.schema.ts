@@ -18,3 +18,18 @@ export const ProductSchema = new mongoose.Schema({
     default: Date.now,
   },
 });
+
+// import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
+// import { Date } from 'mongoose';
+
+// @Schema()
+// export class Product {
+//   @Prop()
+//   title: string;
+//   @Prop()
+//   description: string;
+
+//   @Prop()
+//   price: number;
+// }
+// export const ProductSchema = SchemaFactory.createForClass(Product);

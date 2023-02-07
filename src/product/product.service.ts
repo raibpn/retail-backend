@@ -8,7 +8,11 @@ export class ProductService {
   constructor(@InjectModel('Product') private productModel: Model<Product>) {}
 
   async getAllProducts() {
-    return await this.productModel.find();
+    const product = await this.productModel.find();
+    if (!product || product.length == 0) {
+      throw new NotFoundException('Products Not Found');
+    }
+    return product;
   }
 
   async getProductById(id: String) {
@@ -21,9 +25,21 @@ export class ProductService {
     return product;
   }
 
-  async update(id: string, productDto: Product): Promise<Product> {
+  async updateProduct(id: string, productDto: Product): Promise<Product> {
+    const existingProduct = await this.productModel.findByIdAndUpdate(
+      id,
+      productDto,
+      { new: true },
+    );
+    if (!existingProduct) {
+      throw new NotFoundException(`Student #${id} not found`);
+    }
+    return existingProduct;
+  }
+
+  async deleteProduct(id: string): Promise<Product> {
     const product = await this.productModel.findById(id);
-    await product.update(productDto);
+    await product.remove();
     return product;
   }
 }

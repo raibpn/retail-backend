@@ -1,4 +1,4 @@
-import { Controller } from '@nestjs/common';
+import { Controller, HttpStatus } from '@nestjs/common';
 import {
   Body,
   Delete,
@@ -20,7 +20,7 @@ export class ProductController {
 
   @Get()
   getAllProduct() {
-    return this.productService.getAllProducts;
+    return this.productService.getAllProducts();
   }
 
   @Get(':id')
@@ -29,13 +29,32 @@ export class ProductController {
   }
 
   @Post()
-  createProduct(@Param('product') product: Product) {
+  createProduct(@Body() product: Product) {
     return this.productService.createProduct(product);
   }
 
-  @Put()
-  update() {}
+  @Put(':id')
+  async update(
+    @Res() res,
+    @Param('id') id: string,
+    @Body() product: Product,
+  ): Promise<Product> {
+    try {
+      const existingProduct = await this.productService.updateProduct(
+        id,
+        product,
+      );
+      return res.status(HttpStatus.OK).json({
+        message: 'Product has been successfully updated',
+        existingProduct,
+      });
+    } catch (err) {
+      return res.status(err.status).json(err.response);
+    }
+  }
 
-  @Delete()
-  delete() {}
+  @Delete(':id')
+  delete(@Param('id') id: string) {
+    return this.productService.deleteProduct(id);
+  }
 }
