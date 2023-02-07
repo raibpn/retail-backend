@@ -8,7 +8,7 @@ export class ProductService {
   constructor(@InjectModel('Product') private productModel: Model<Product>) {}
 
   async getAllProducts() {
-    const product = await this.productModel.find();
+    const product = await this.productModel.find().exec();
     if (!product || product.length == 0) {
       throw new NotFoundException('Products Not Found');
     }
