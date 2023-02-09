@@ -12,8 +12,6 @@ import {
 import { ProductService } from './product.service';
 import { Product } from 'src/types/product';
 
-// import { CreateProductDto } from 'src/product/dtos/product.schema';
-
 @Controller('product')
 export class ProductController {
   constructor(private productService: ProductService) {}

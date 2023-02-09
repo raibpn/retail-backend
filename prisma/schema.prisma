@@ -11,7 +11,7 @@ datasource db {
 }
 
 model Product {
-  id Int @id @map("_id")
+  id String @id @default(auto()) @map("_id") @db.ObjectId
   title String 
   description String 
   price Int
@@ -20,7 +20,7 @@ model Product {
 }
 
 model User {
-  id Int @id @map("_id")
+  id String @id @default(auto()) @map("_id") @db.ObjectId
   firstName String
   lastName String
   email String

@@ -19,6 +19,11 @@ export const ProductSchema = new mongoose.Schema({
   },
 });
 
+
+
+
+//OTHER WAY
+
 // import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 // import { Date } from 'mongoose';
 
