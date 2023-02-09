@@ -15,6 +15,7 @@ model Product {
   title String 
   description String 
   price Int
+  slug String @unique
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }
@@ -23,7 +24,7 @@ model User {
   id String @id @default(auto()) @map("_id") @db.ObjectId
   firstName String
   lastName String
-  email String
+  email String @unique
   hash String
   username String?
 }
