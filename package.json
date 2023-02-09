@@ -29,6 +29,7 @@
     "@nestjs/mapped-types": "^1.2.2",
     "@nestjs/mongoose": "^9.2.1",
     "@nestjs/platform-express": "^9.0.0",
+    "@nestjs/swagger": "^6.2.1",
     "@nestjs/typeorm": "^9.0.1",
     "@prisma/client": "^4.10.0",
     "apollo-server-express": "^3.11.1",
@@ -42,6 +43,7 @@
     "pg": "^8.9.0",
     "reflect-metadata": "^0.1.13",
     "rxjs": "^7.2.0",
+    "swagger-ui-express": "^4.6.0",
     "typeorm": "^0.3.11"
   },
   "devDependencies": {

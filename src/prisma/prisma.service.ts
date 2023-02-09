@@ -1,20 +1,30 @@
-import { Injectable } from '@nestjs/common';
+import { INestApplication, Injectable } from '@nestjs/common';
 import { PrismaClient } from '@prisma/client';
 import { ConfigService } from '@nestjs/config';
+import { env } from 'process';
+
+// @Injectable()
+// export class PrismaService extends PrismaClient {
+//   constructor() {
+//     super({
+//       datasources: {
+//         db: {
+//           url: `${process.env.PROD_MONGO_URL}`,
+//         },
+//       },
+//     });
+//   }
+
+//   cleanDb() {
+//     return this.$transaction([this.user.deleteMany()]);
+//   }
+// }
 
 @Injectable()
 export class PrismaService extends PrismaClient {
-  constructor(config: ConfigService) {
-    super({
-      datasources: {
-        db: {
-          url: config.get('PROD_MONGO_URL'),
-        },
-      },
+  async enableShutdownHooks(app: INestApplication) {
+    this.$on('beforeExit', async () => {
+      await app.close();
     });
-  }
-
-  cleanDb() {
-    return this.$transaction([this.user.deleteMany()]);
   }
 }
