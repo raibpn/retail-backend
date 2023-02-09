@@ -4,4 +4,5 @@ export class Product {
   description: string;
   price: number;
   createdAt: Date;
+  slug: String;
 }
