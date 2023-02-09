@@ -10,7 +10,7 @@ import { AuthModule } from './auth/auth.module';
   imports: [
     ConfigModule.forRoot(),
     ProductModule,
-    // MongooseModule.forRoot(`${process.env.MONGO_URI}`),
+    // MongooseModule.forRoot(`${process.env.PROD_MONGO_URL}`),
     AuthModule,
   ],
   controllers: [],
