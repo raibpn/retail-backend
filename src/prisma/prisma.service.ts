@@ -8,7 +8,6 @@ export class PrismaService extends PrismaClient {
     super({
       datasources: {
         db: {
-          //   url: `${process.env.PROD_MONGO_URL}`,
           url: config.get('PROD_MONGO_URL'),
         },
       },
