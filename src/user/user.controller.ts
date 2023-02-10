@@ -1,4 +1,10 @@
 import { Controller } from '@nestjs/common';
+import { Get } from '@nestjs/common/decorators/http/request-mapping.decorator';
 
-@Controller('user')
-export class UserController {}
+@Controller('users')
+export class UserController {
+  @Get('me')
+  getMe() {
+    return 'this is me';
+  }
+}
