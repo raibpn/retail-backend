@@ -52,7 +52,7 @@ export class ProductsController {
       }),
     }),
   )
-  handlUpload(@UploadedFile() file: Express.Multer.File) {
+  handleUpload(@UploadedFile() file: Express.Multer.File) {
     console.log(file);
     return 'file upload API';
   }
