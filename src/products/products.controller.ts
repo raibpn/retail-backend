@@ -25,6 +25,9 @@ import {
 } from '@nestjs/platform-express/multer';
 import { diskStorage } from 'multer';
 import { extname } from 'path';
+import { BadRequestException } from '@nestjs/common/exceptions';
+import { Res } from '@nestjs/common/decorators';
+import { Response } from 'express';
 
 @Controller('products')
 export class ProductsController {
@@ -50,11 +53,31 @@ export class ProductsController {
           callback(null, filename);
         },
       }),
+      fileFilter: (req, file, cb) => {
+        if (!file.originalname.match(/\.(jpg|jpeg|png|gif)$/)) {
+          return cb(null, false);
+        }
+        cb(null, true);
+      },
     }),
   )
   handleUpload(@UploadedFile() file: Express.Multer.File) {
     console.log(file);
-    return 'file upload API';
+    if (!file) {
+      throw new BadRequestException('Invalid Image');
+    } else {
+      const response = {
+        filepath: `http://localhost:8000/products/pictures/${file.filename}`,
+      };
+
+      return response;
+    }
+  }
+
+  @Get('pictures/:filename')
+  async getPictures(@Param('filename') filename, @Res() res: Response) {
+    console.log('filename:', filename);
+    res.sendFile(filename, { root: './uploads' });
   }
 
   @Get()
