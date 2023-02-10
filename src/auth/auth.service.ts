@@ -4,7 +4,7 @@ import {
   Injectable,
 } from '@nestjs/common';
 import { Product, User } from '@prisma/client';
-import { AuthDto } from './dto';
+import { AuthDto, signInDto } from './dto';
 import * as argon from 'argon2';
 import { PrismaService } from '../prisma/prisma.service';
 import { PrismaClientKnownRequestError } from '@prisma/client/runtime';
@@ -47,16 +47,16 @@ export class AuthService {
   }
 
   //SIGNIN
-  async signin(dto: AuthDto) {
-    //FIND THE USER BY EMAIL
+  async signin(dto: signInDto) {
+    //find the user by email
     const user = await this.prisma.user.findUnique({
       where: {
         email: dto.email,
       },
     });
-    //HANDLE NOT FOUND
+    //handle not found
     if (!user) throw new ForbiddenException('Credentials Incorrect');
-    //COMPARE PASSWORD
+    //compare password
     const pwMathces = await argon.verify(user.hash, dto.password);
     if (!pwMathces) throw new ForbiddenException('Credential incorrect');
 
