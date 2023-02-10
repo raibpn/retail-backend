@@ -19,6 +19,11 @@ export class CreateProductDto {
 
   @IsString()
   @IsNotEmpty()
-  @ApiProperty({ required: true })
+  @ApiProperty()
   slug: string;
+
+  @IsString()
+  @IsNotEmpty()
+  @ApiProperty({ required: true })
+  image: string;
 }

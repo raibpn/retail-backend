@@ -18,4 +18,7 @@ export class ProductEntity {
 
   @ApiProperty()
   slug: String;
+
+  @ApiProperty()
+  image: String;
 }

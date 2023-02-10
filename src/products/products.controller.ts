@@ -41,18 +41,18 @@ export class ProductsController {
   @UseInterceptors(
     FileInterceptor('file', {
       storage: diskStorage({
-        destination: './files',
+        destination: './uploads',
         filename: (req, file, callback) => {
           const uniqueSuffix =
             Date.now() + '-' + Math.round(Math.random() * 1e9);
           const ext = extname(file.originalname);
-          const filename = `${uniqueSuffix}${ext}`;
+          const filename = `${file.originalname}-${uniqueSuffix}${ext}`;
           callback(null, filename);
         },
       }),
     }),
   )
-  uploadFile(@UploadedFile() file: Express.Multer.File) {
+  handlUpload(@UploadedFile() file: Express.Multer.File) {
     console.log(file);
     return 'file upload API';
   }
