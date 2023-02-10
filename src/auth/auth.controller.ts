@@ -9,6 +9,7 @@ export class AuthController {
   @Post('signup')
   signup(@Body() dto: AuthDto) {
     return this.authService.signup(dto);
+    console.log('user:', dto);
   }
 
   // signup(@Body('email') email: string, @Body('password') password: string) {

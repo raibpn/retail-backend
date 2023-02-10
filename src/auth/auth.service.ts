@@ -1,4 +1,9 @@
-import { ForbiddenException, Injectable } from '@nestjs/common';
+import {
+  BadRequestException,
+  ForbiddenException,
+  Injectable,
+} from '@nestjs/common';
+import { Product, User } from '@prisma/client';
 import { AuthDto } from './dto';
 import * as argon from 'argon2';
 import { PrismaService } from '../prisma/prisma.service';
@@ -9,48 +14,55 @@ import { ConfigService } from '@nestjs/config';
 @Injectable()
 export class AuthService {
   constructor(
-    private prisma: PrismaService, // private jwt: JwtService,
-  ) // private config: ConfigService,
-  {}
+    private prisma: PrismaService, // private jwt: JwtService, // private config: ConfigService,
+  ) {}
 
   async signup(dto: AuthDto) {
-    console.log('hit');
     // generate the password hash
     const hash = await argon.hash(dto.password);
     // save the new user in the db
 
-    const user = await this.prisma.user.create({
-      data: {
+    try {
+      const user = await this.prisma.user.create({
+        data: {
+          email: dto.email,
+          firstName: dto.firstName,
+          lastName: dto.lastName,
+          hash,
+        },
+      });
+
+      delete user.hash;
+      return user;
+    } catch (error) {
+      if (error instanceof PrismaClientKnownRequestError) {
+        if (error.code === 'P2002') {
+          throw new ForbiddenException('Account Taken');
+        } else {
+          throw new BadRequestException('Account already taken!');
+        }
+      }
+      throw error;
+    }
+  }
+
+  //SIGNIN
+  async signin(dto: AuthDto) {
+    //FIND THE USER BY EMAIL
+    const user = await this.prisma.user.findUnique({
+      where: {
         email: dto.email,
-        hash,
-        firstName: dto.password,
-        lastName: dto.password,
       },
     });
+    //HANDLE NOT FOUND
+    if (!user) throw new ForbiddenException('Credentials Incorrect');
+    //COMPARE PASSWORD
+    const pwMathces = await argon.verify(user.hash, dto.password);
+    if (!pwMathces) throw new ForbiddenException('Credential incorrect');
 
+    delete user.hash;
     return user;
   }
-
-  async signin(dto: AuthDto) {
-    return dto;
-  }
-
-  // async signin(dto: AuthDto) {
-  //   // find the user by email
-  //   const user = await this.prisma.user.findUnique({
-  //     where: {
-  //       email: dto.email,
-  //     },
-  //   });
-  //   // if user does not exist throw exception
-  //   if (!user) throw new ForbiddenException('Credentials incorrect');
-
-  //   // compare password
-  //   const pwMatches = await argon.verify(user.hash, dto.password);
-  //   // if password incorrect throw exception
-  //   if (!pwMatches) throw new ForbiddenException('Credentials incorrect');
-  //   // return this.signToken(user.id, user.email);
-  // }
 
   // async signToken(
   //   userId: string,
