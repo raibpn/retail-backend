@@ -1,10 +1,12 @@
-import { Controller } from '@nestjs/common';
-import { Get } from '@nestjs/common/decorators/http/request-mapping.decorator';
+import { Controller, UseGuards, Get, Req } from '@nestjs/common';
+import { Request } from 'express';
+import { JwtGuard } from 'src/guard';
 
 @Controller('users')
 export class UserController {
+  @UseGuards(JwtGuard)
   @Get('me')
-  getMe() {
-    return 'this is me';
+  getMe(@Req() req: Request) {
+    return req.user;
   }
 }
