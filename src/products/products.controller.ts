@@ -17,7 +17,7 @@ import { ProductsService } from './products.service';
 import { CreateProductDto } from './dto/create-product.dto';
 import { UpdateProductDto } from './dto/update-product.dto';
 import { ProductEntity } from './entities/product.entity';
-import { ApiCreatedResponse } from '@nestjs/swagger';
+import { ApiConsumes, ApiCreatedResponse } from '@nestjs/swagger';
 import {
   AnyFilesInterceptor,
   FileInterceptor,
