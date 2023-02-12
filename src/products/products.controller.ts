@@ -24,10 +24,30 @@ import {
   FilesInterceptor,
 } from '@nestjs/platform-express/multer';
 import { diskStorage } from 'multer';
-import { extname } from 'path';
+import path, { extname } from 'path';
 import { BadRequestException } from '@nestjs/common/exceptions';
 import { Res } from '@nestjs/common/decorators';
 import { Response } from 'express';
+import { uuid } from 'uuidv4';
+// const { v4: uuidv4 } = require('uuid');
+// export const storage = {
+//   storage: diskStorage({
+//     destination: './uploads',
+//     filename: (req, file, callback) => {
+//       const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1e9);
+//       const ext = extname(file.originalname);
+//       const filename = `${file.originalname}-${uniqueSuffix}${ext}`;
+//       callback(null, filename);
+//     },
+//     // filename: (req, file, callback) => {
+//     //   const filename: string =
+//     //     path.parse(file.originalname).name.replace(/\s/g, '') + uuid();
+//     //   const extension: string = path.parse(file.originalname).ext;
+
+//     //   callback(null, `${filename}${extension}`);
+//     // },
+//   }),
+// };
 
 @Controller('products')
 export class ProductsController {
@@ -50,6 +70,7 @@ export class ProductsController {
             Date.now() + '-' + Math.round(Math.random() * 1e9);
           const ext = extname(file.originalname);
           const filename = `${file.originalname}-${uniqueSuffix}${ext}`;
+
           callback(null, filename);
         },
       }),
