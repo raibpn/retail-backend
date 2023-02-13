@@ -1,38 +1,69 @@
-import { Injectable, UploadedFile, UseInterceptors } from '@nestjs/common';
+import {
+  BadRequestException,
+  Injectable,
+  Request,
+  UploadedFile,
+  UseInterceptors,
+} from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express/multer';
 import { diskStorage } from 'multer';
-import { extname } from 'path';
+import { extname, join } from 'path';
+import { of } from 'rxjs';
+import { CloudinaryService } from 'src/cloudinary/cloudinary.service';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { CreateProductDto, UpdateProductDto } from './dto';
 import { ProductEntity } from './entities/product.entity';
 @Injectable()
 export class ProductsService {
-  constructor(private prisma: PrismaService) {}
+  constructor(
+    private prisma: PrismaService,
+    private cloudinary: CloudinaryService,
+  ) {}
 
-  create(CreateProductDto: CreateProductDto) {
+  async create(CreateProductDto: CreateProductDto, file: Express.Multer.File) {
     // console.log('product:', product);
+    // return await this.cloudinary.uploadImage(file).catch(() => {
+    //   throw new BadRequestException('Invalid file type.');
+    // });
+    // return this.prisma.product.create({ data: CreateProductDto });
+    try {
+      const result = await this.cloudinary.uploadImage(file, 'products');
+      console.log('result upload image', result);
+      const product = await this.prisma.product.create({
+        data: {
+          title: CreateProductDto.title,
+          description: CreateProductDto.description,
+          slug: CreateProductDto.slug,
+          price: CreateProductDto.price,
+          image: result.secure_url,
+        },
+      });
 
-    return this.prisma.product.create({ data: CreateProductDto });
+      return product;
+    } catch (error) {}
   }
 
-  // @UseInterceptors(
-  //   FileInterceptor('file', {
-  //     storage: diskStorage({
-  //       destination: './files',
-  //       filename: (req, file, callback) => {
-  //         const uniqueSuffix =
-  //           Date.now() + '-' + Math.round(Math.random() * 1e9);
-  //         const ext = extname(file.originalname);
-  //         const filename = `${uniqueSuffix}${ext}`;
-  //         callback(null, filename);
-  //       },
-  //     }),
-  //   }),
-  // )
-  // uploadFile(@UploadedFile() file: Express.Multer.File) {
+  // handleUpload(@UploadedFile() file: Express.Multer.File) {
   //   console.log(file);
-  //   return 'file upload API';
+  //   if (!file) {
+  //     throw new BadRequestException('Invalid Image');
+  //   } else {
+  //     const response = {
+  //       filepath: `http://localhost:8000/products/pictures/${file.filename}`,
+  //     };
+
+  //     return response;
+  //   }
   // }
+
+  handleUpload(@UploadedFile() file: Express.Multer.File, @Request() req): any {
+    const fileName = file?.filename;
+    if (!fileName) return of({ error: 'File must be a png, jpeg/jpg' });
+    const imagesFolderPath = join(process.cwd(), 'uploads');
+    const fullImagePath = join(imagesFolderPath + '/' + file.filename);
+
+    return of({ error: 'File content does not match extension!' });
+  }
 
   async findAll(): Promise<ProductEntity[]> {
     return await this.prisma.product.findMany();

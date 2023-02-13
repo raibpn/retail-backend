@@ -25,5 +25,14 @@ export class CreateProductDto {
   @IsString()
   @IsNotEmpty()
   @ApiProperty({ required: true })
-  image: string;
+  image: {
+    public_id: {
+      type: string;
+      required: true;
+    };
+    url: {
+      type: string;
+      required: true;
+    };
+  };
 }

@@ -29,72 +29,62 @@ import { BadRequestException } from '@nestjs/common/exceptions';
 import { Res } from '@nestjs/common/decorators';
 import { Response } from 'express';
 import { uuid } from 'uuidv4';
-// const { v4: uuidv4 } = require('uuid');
-// export const storage = {
-//   storage: diskStorage({
-//     destination: './uploads',
-//     filename: (req, file, callback) => {
-//       const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1e9);
-//       const ext = extname(file.originalname);
-//       const filename = `${file.originalname}-${uniqueSuffix}${ext}`;
-//       callback(null, filename);
-//     },
-//     // filename: (req, file, callback) => {
-//     //   const filename: string =
-//     //     path.parse(file.originalname).name.replace(/\s/g, '') + uuid();
-//     //   const extension: string = path.parse(file.originalname).ext;
-
-//     //   callback(null, `${filename}${extension}`);
-//     // },
-//   }),
-// };
+import { saveImageToStorage } from 'src/multer/image-storage';
 
 @Controller('products')
 export class ProductsController {
   constructor(private readonly productsService: ProductsService) {}
 
   @Post()
+  @ApiConsumes('multipart/form-data')
   @ApiCreatedResponse({ type: ProductEntity })
-  create(@Body() CreateProductDto: CreateProductDto) {
+  @UseInterceptors(FileInterceptor('file', saveImageToStorage))
+  create(
+    @Body() CreateProductDto: CreateProductDto,
+    @UploadedFile() file: Express.Multer.File,
+  ): any {
+    console.log('product in controller');
     console.log('product in controller:', CreateProductDto);
-    return this.productsService.create(CreateProductDto);
+    return this.productsService.create(CreateProductDto, file);
   }
 
-  @Post('file')
-  @UseInterceptors(
-    FileInterceptor('file', {
-      storage: diskStorage({
-        destination: './uploads',
-        filename: (req, file, callback) => {
-          const uniqueSuffix =
-            Date.now() + '-' + Math.round(Math.random() * 1e9);
-          const ext = extname(file.originalname);
-          const filename = `${file.originalname}-${uniqueSuffix}${ext}`;
+  // @Post('file')
+  // @UseInterceptors(
+  //   FileInterceptor('file', {
+  //     storage: diskStorage({
+  //       destination: './uploads',
+  //       filename: (req, file, callback) => {
+  //         const uniqueSuffix =
+  //           Date.now() + '-' + Math.round(Math.random() * 1e9);
+  //         const ext = extname(file.originalname);
+  //         const filename = `${file.originalname}-${uniqueSuffix}${ext}`;
 
-          callback(null, filename);
-        },
-      }),
-      fileFilter: (req, file, cb) => {
-        if (!file.originalname.match(/\.(jpg|jpeg|png|gif)$/)) {
-          return cb(null, false);
-        }
-        cb(null, true);
-      },
-    }),
-  )
-  handleUpload(@UploadedFile() file: Express.Multer.File) {
-    console.log(file);
-    if (!file) {
-      throw new BadRequestException('Invalid Image');
-    } else {
-      const response = {
-        filepath: `http://localhost:8000/products/pictures/${file.filename}`,
-      };
+  //         callback(null, filename);
+  //       },
+  //     }),
+  //     fileFilter: (req, file, cb) => {
+  //       if (!file.originalname.match(/\.(jpg|jpeg|png|gif)$/)) {
+  //         return cb(null, false);
+  //       }
+  //       cb(null, true);
+  //     },
+  //   }),
+  // )
 
-      return response;
-    }
-  }
+  // handleUpload(@UploadedFile() file: Express.Multer.File) {
+  //   console.log(file);
+  //   if (!file) {
+  //     throw new BadRequestException('Invalid Image');
+  //   } else {
+  //     const response = {
+  //       filepath: `http://localhost:8000/products/pictures/${file.filename}`,
+  //     };
 
+  //     return response;
+  //   }
+  // }
+
+  //ORIGINAL;
   @Get('pictures/:filename')
   async getPictures(@Param('filename') filename, @Res() res: Response) {
     console.log('filename:', filename);
