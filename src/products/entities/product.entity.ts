@@ -1,5 +1,6 @@
 import { Product } from '@prisma/client';
 import { ApiProperty } from '@nestjs/swagger';
+import { MinLength } from 'class-validator';
 export class ProductEntity {
   @ApiProperty()
   id: string;
@@ -11,14 +12,15 @@ export class ProductEntity {
   description: string;
 
   @ApiProperty()
+  @MinLength(2)
   price: number;
 
   @ApiProperty()
   createdAt: Date;
 
   @ApiProperty()
-  slug: String;
+  slug: string;
 
-  @ApiProperty()
-  image: String;
+  @ApiProperty({ type: 'string', format: 'binary' })
+  image: any;
 }

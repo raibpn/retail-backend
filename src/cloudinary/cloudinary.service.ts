@@ -6,13 +6,14 @@ import toStream = require('buffer-to-stream');
 export class CloudinaryService {
   async uploadImage(
     file: Express.Multer.File,
-    folder: string,
+    // folder: string,
   ): Promise<UploadApiResponse | UploadApiErrorResponse> {
-    console.log('folder');
+    console.log('image in cloudinary service', file);
     return new Promise((resolve, reject) => {
-      const upload = v2.uploader.upload_stream(
-        { folder: folder },
-        function (error, result) {
+      const upload = v2.uploader.upload(
+        file.filename,
+        { folder: 'products' },
+        (error, result) => {
           if (error) return reject(error);
           resolve(result);
         },

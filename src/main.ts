@@ -15,6 +15,14 @@ async function bootstrap() {
     .setTitle('Retail')
     .setDescription('Retail API')
     .setVersion('0.1')
+    .addBearerAuth(
+      {
+        type: 'http',
+        scheme: 'bearer',
+        bearerFormat: 'Token',
+      },
+      'access-token',
+    )
     .build();
 
   const document = SwaggerModule.createDocument(app, config);

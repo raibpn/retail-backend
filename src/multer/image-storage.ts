@@ -18,6 +18,22 @@ const validMimeTypes: validMimeType[] = [
   'image/jpg',
 ];
 
+// export const saveImageToStorage = {
+//   storage: diskStorage({
+//     destination: './uploads',
+//     filename: (req, file, cb) => {
+//       const fileExtension: string = path.extname(file.originalname);
+//       const fileName: string = uuidv4() + fileExtension;
+
+//       cb(null, fileName);
+//     },
+//   }),
+//   fileFilter: (req, file, cb) => {
+//     const allowedMimeTypes: validMimeType[] = validMimeTypes;
+//     allowedMimeTypes.includes(file.mimeType) ? cb(null, true) : cb(null, false);
+//   },
+// };
+
 export const saveImageToStorage = {
   storage: diskStorage({
     destination: './uploads',

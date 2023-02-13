@@ -11,13 +11,14 @@ import {
   UploadedFile,
   UseInterceptors,
   UploadedFiles,
+  HttpStatus,
 } from '@nestjs/common';
 // import { PrismaClientExceptionFilter } from 'src/prisma-client-exception.filter';
 import { ProductsService } from './products.service';
 import { CreateProductDto } from './dto/create-product.dto';
 import { UpdateProductDto } from './dto/update-product.dto';
 import { ProductEntity } from './entities/product.entity';
-import { ApiConsumes, ApiCreatedResponse } from '@nestjs/swagger';
+import { ApiBody, ApiConsumes, ApiCreatedResponse } from '@nestjs/swagger';
 import {
   AnyFilesInterceptor,
   FileInterceptor,
@@ -26,7 +27,7 @@ import {
 import { diskStorage } from 'multer';
 import path, { extname } from 'path';
 import { BadRequestException } from '@nestjs/common/exceptions';
-import { Res } from '@nestjs/common/decorators';
+import { HttpCode, Request, Res } from '@nestjs/common/decorators';
 import { Response } from 'express';
 import { uuid } from 'uuidv4';
 import { saveImageToStorage } from 'src/multer/image-storage';
@@ -37,15 +38,42 @@ export class ProductsController {
 
   @Post()
   @ApiConsumes('multipart/form-data')
-  @ApiCreatedResponse({ type: ProductEntity })
-  @UseInterceptors(FileInterceptor('file', saveImageToStorage))
-  create(
+  // @ApiCreatedResponse({ type: ProductEntity })
+  @ApiBody({
+    schema: {
+      type: 'object',
+      properties: {
+        title: {
+          type: 'string',
+        },
+        description: {
+          type: 'string',
+        },
+        price: {
+          type: 'number',
+        },
+        slug: {
+          type: 'string',
+        },
+        image: {
+          type: 'string',
+          format: 'binary',
+        },
+      },
+    },
+  })
+
+  //delete saveImageToStorage and uncomment memory storage in app.module.ts
+  //to upload file in memory storage instead on disk
+  @UseInterceptors(FileInterceptor('image'))
+  // @HttpCode(HttpStatus.CREATED)
+  async create(
     @Body() CreateProductDto: CreateProductDto,
-    @UploadedFile() file: Express.Multer.File,
-  ): any {
-    console.log('product in controller');
+    @UploadedFile('image') image,
+  ) {
     console.log('product in controller:', CreateProductDto);
-    return this.productsService.create(CreateProductDto, file);
+    console.log('image in controller:', image);
+    return this.productsService.create(CreateProductDto, image);
   }
 
   // @Post('file')
@@ -85,11 +113,11 @@ export class ProductsController {
   // }
 
   //ORIGINAL;
-  @Get('pictures/:filename')
-  async getPictures(@Param('filename') filename, @Res() res: Response) {
-    console.log('filename:', filename);
-    res.sendFile(filename, { root: './uploads' });
-  }
+  // @Get('pictures/:filename')
+  // async getPictures(@Param('filename') filename, @Res() res: Response) {
+  //   console.log('filename:', filename);
+  //   res.sendFile(filename, { root: './uploads' });
+  // }
 
   @Get()
   async findAll() {

@@ -20,14 +20,15 @@ export class ProductsService {
     private cloudinary: CloudinaryService,
   ) {}
 
-  async create(CreateProductDto: CreateProductDto, file: Express.Multer.File) {
+  async create(CreateProductDto: CreateProductDto, image: Express.Multer.File) {
     // console.log('product:', product);
     // return await this.cloudinary.uploadImage(file).catch(() => {
     //   throw new BadRequestException('Invalid file type.');
     // });
     // return this.prisma.product.create({ data: CreateProductDto });
     try {
-      const result = await this.cloudinary.uploadImage(file, 'products');
+      const result = await this.cloudinary.uploadImage(image);
+      console.log('sent img to cloudinary:', image);
       console.log('result upload image', result);
       const product = await this.prisma.product.create({
         data: {
@@ -38,7 +39,7 @@ export class ProductsService {
           image: result.secure_url,
         },
       });
-
+      console.log('product:', product);
       return product;
     } catch (error) {}
   }
@@ -56,14 +57,14 @@ export class ProductsService {
   //   }
   // }
 
-  handleUpload(@UploadedFile() file: Express.Multer.File, @Request() req): any {
-    const fileName = file?.filename;
-    if (!fileName) return of({ error: 'File must be a png, jpeg/jpg' });
-    const imagesFolderPath = join(process.cwd(), 'uploads');
-    const fullImagePath = join(imagesFolderPath + '/' + file.filename);
+  // handleUpload(@UploadedFile() file: Express.Multer.File, @Request() req): any {
+  //   const fileName = file?.filename;
+  //   if (!fileName) return of({ error: 'File must be a png, jpeg/jpg' });
+  //   const imagesFolderPath = join(process.cwd(), 'uploads');
+  //   const fullImagePath = join(imagesFolderPath + '/' + file.filename);
 
-    return of({ error: 'File content does not match extension!' });
-  }
+  //   return of({ error: 'File content does not match extension!' });
+  // }
 
   async findAll(): Promise<ProductEntity[]> {
     return await this.prisma.product.findMany();

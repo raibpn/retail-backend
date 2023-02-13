@@ -1,5 +1,11 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsEmail, IsNotEmpty, IsNumber, IsString } from 'class-validator';
+import {
+  IsEmail,
+  IsNotEmpty,
+  IsNumber,
+  IsOptional,
+  IsString,
+} from 'class-validator';
 
 export class CreateProductDto {
   @IsString()
@@ -12,7 +18,6 @@ export class CreateProductDto {
   @ApiProperty({ required: true })
   description: string;
 
-  @IsNumber()
   @IsNotEmpty()
   @ApiProperty({ required: true })
   price: number;
@@ -22,17 +27,11 @@ export class CreateProductDto {
   @ApiProperty()
   slug: string;
 
-  @IsString()
-  @IsNotEmpty()
-  @ApiProperty({ required: true })
-  image: {
-    public_id: {
-      type: string;
-      required: true;
-    };
-    url: {
-      type: string;
-      required: true;
-    };
-  };
+  // @IsOptional()
+  // @IsNotEmpty()
+  // @ApiProperty({ required: true })
+  // image: any;
+
+  @ApiProperty({ type: 'string', format: 'binary' })
+  image: Express.Multer.File;
 }

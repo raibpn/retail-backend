@@ -6,6 +6,7 @@ import { UserModule } from './user/user.module';
 import { ProductsModule } from './products/products.module';
 import { MulterModule } from '@nestjs/platform-express';
 import { CloudinaryModule } from './cloudinary/cloudinary.module';
+import { memoryStorage } from 'multer';
 
 @Module({
   imports: [
@@ -17,6 +18,9 @@ import { CloudinaryModule } from './cloudinary/cloudinary.module';
     MulterModule.register({
       dest: './uploads',
     }),
+    // MulterModule.register({
+    //   storage: memoryStorage(),
+    // }),
     CloudinaryModule,
   ],
   controllers: [],
