@@ -55,25 +55,24 @@ export class ProductsController {
         slug: {
           type: 'string',
         },
-        image: {
+        file: {
           type: 'string',
           format: 'binary',
         },
       },
     },
   })
-
   //delete saveImageToStorage and uncomment memory storage in app.module.ts
   //to upload file in memory storage instead on disk
-  @UseInterceptors(FileInterceptor('image'))
+  @UseInterceptors(FileInterceptor('file'))
   // @HttpCode(HttpStatus.CREATED)
-  async create(
+  create(
     @Body() CreateProductDto: CreateProductDto,
-    @UploadedFile('image') image,
+    @UploadedFile('file') file: Express.Multer.File,
   ) {
     console.log('product in controller:', CreateProductDto);
-    console.log('image in controller:', image);
-    return this.productsService.create(CreateProductDto, image);
+    console.log('image in controller:', file);
+    return this.productsService.create(CreateProductDto, file);
   }
 
   // @Post('file')
