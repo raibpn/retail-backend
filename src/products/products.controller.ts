@@ -50,7 +50,7 @@ export class ProductsController {
           type: 'string',
         },
         price: {
-          type: 'number',
+          type: 'string',
         },
         slug: {
           type: 'string',

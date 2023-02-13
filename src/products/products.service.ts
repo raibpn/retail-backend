@@ -41,30 +41,10 @@ export class ProductsService {
       });
       console.log('product:', product);
       return product;
-    } catch (error) {}
+    } catch (error) {
+      console.log(error);
+    }
   }
-
-  // handleUpload(@UploadedFile() file: Express.Multer.File) {
-  //   console.log(file);
-  //   if (!file) {
-  //     throw new BadRequestException('Invalid Image');
-  //   } else {
-  //     const response = {
-  //       filepath: `http://localhost:8000/products/pictures/${file.filename}`,
-  //     };
-
-  //     return response;
-  //   }
-  // }
-
-  // handleUpload(@UploadedFile() file: Express.Multer.File, @Request() req): any {
-  //   const fileName = file?.filename;
-  //   if (!fileName) return of({ error: 'File must be a png, jpeg/jpg' });
-  //   const imagesFolderPath = join(process.cwd(), 'uploads');
-  //   const fullImagePath = join(imagesFolderPath + '/' + file.filename);
-
-  //   return of({ error: 'File content does not match extension!' });
-  // }
 
   async findAll(): Promise<ProductEntity[]> {
     return await this.prisma.product.findMany();

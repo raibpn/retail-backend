@@ -20,7 +20,7 @@ export class CreateProductDto {
 
   @IsNotEmpty()
   @ApiProperty({ required: true })
-  price: number;
+  price: string;
 
   @IsString()
   @IsNotEmpty()
@@ -32,6 +32,6 @@ export class CreateProductDto {
   // @ApiProperty({ required: true })
   // image: any;
 
-  @ApiProperty({ type: 'string', format: 'binary' })
-  image: Express.Multer.File;
+  @ApiProperty({ type: 'string', format: 'binary', required: true })
+  image: string;
 }
