@@ -28,7 +28,7 @@ export class ProductsService {
     // return this.prisma.product.create({ data: CreateProductDto });
     try {
       const result = await this.cloudinary.uploadImage(image);
-      console.log('sent img to cloudinary:', image);
+      console.log('sent img to cloudinary:', result.secure_url);
       console.log('result upload image', result);
       const product = await this.prisma.product.create({
         data: {

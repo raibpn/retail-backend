@@ -21,6 +21,6 @@ export class ProductEntity {
   @ApiProperty()
   slug: string;
 
-  @ApiProperty({ type: 'string', format: 'binary' })
-  image: any;
+  @ApiProperty()
+  image: string;
 }

@@ -70,53 +70,11 @@ export class ProductsController {
     @Body() CreateProductDto: CreateProductDto,
     @UploadedFile('file') file: Express.Multer.File,
   ) {
-    console.log('product in controller:', CreateProductDto);
-    console.log('image in controller:', file);
+    // console.log('product in controller:', CreateProductDto);
+    // console.log('image in controller:', file);
+    console.log({ CreateProductDto, file });
     return this.productsService.create(CreateProductDto, file);
   }
-
-  // @Post('file')
-  // @UseInterceptors(
-  //   FileInterceptor('file', {
-  //     storage: diskStorage({
-  //       destination: './uploads',
-  //       filename: (req, file, callback) => {
-  //         const uniqueSuffix =
-  //           Date.now() + '-' + Math.round(Math.random() * 1e9);
-  //         const ext = extname(file.originalname);
-  //         const filename = `${file.originalname}-${uniqueSuffix}${ext}`;
-
-  //         callback(null, filename);
-  //       },
-  //     }),
-  //     fileFilter: (req, file, cb) => {
-  //       if (!file.originalname.match(/\.(jpg|jpeg|png|gif)$/)) {
-  //         return cb(null, false);
-  //       }
-  //       cb(null, true);
-  //     },
-  //   }),
-  // )
-
-  // handleUpload(@UploadedFile() file: Express.Multer.File) {
-  //   console.log(file);
-  //   if (!file) {
-  //     throw new BadRequestException('Invalid Image');
-  //   } else {
-  //     const response = {
-  //       filepath: `http://localhost:8000/products/pictures/${file.filename}`,
-  //     };
-
-  //     return response;
-  //   }
-  // }
-
-  //ORIGINAL;
-  // @Get('pictures/:filename')
-  // async getPictures(@Param('filename') filename, @Res() res: Response) {
-  //   console.log('filename:', filename);
-  //   res.sendFile(filename, { root: './uploads' });
-  // }
 
   @Get()
   async findAll() {

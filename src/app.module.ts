@@ -15,12 +15,12 @@ import { memoryStorage } from 'multer';
     PrismaModule,
     UserModule,
     ProductsModule,
-    MulterModule.register({
-      dest: './uploads',
-    }),
     // MulterModule.register({
-    //   storage: memoryStorage(),
+    //   dest: './uploads',
     // }),
+    MulterModule.register({
+      storage: memoryStorage(),
+    }),
     CloudinaryModule,
   ],
   controllers: [],
