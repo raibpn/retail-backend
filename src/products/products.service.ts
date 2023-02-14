@@ -1,14 +1,5 @@
-import {
-  BadRequestException,
-  Injectable,
-  Request,
-  UploadedFile,
-  UseInterceptors,
-} from '@nestjs/common';
-import { FileInterceptor } from '@nestjs/platform-express/multer';
-import { diskStorage } from 'multer';
-import { extname, join } from 'path';
-import { of } from 'rxjs';
+import { BadRequestException, Injectable } from '@nestjs/common';
+
 import { CloudinaryService } from 'src/cloudinary/cloudinary.service';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { CreateProductDto, UpdateProductDto } from './dto';
@@ -28,15 +19,17 @@ export class ProductsService {
     // return this.prisma.product.create({ data: CreateProductDto });
     try {
       const result = await this.cloudinary.uploadImage(image);
-      console.log('sent img to cloudinary:', result.secure_url);
-      console.log('result upload image', result);
+      // console.log('sent img to cloudinary:', result.secure_url);
+      // console.log('result upload image', result);
       const product = await this.prisma.product.create({
         data: {
           title: CreateProductDto.title,
           description: CreateProductDto.description,
           slug: CreateProductDto.slug,
           price: CreateProductDto.price,
-          image: result.secure_url,
+          image: result.url,
+          height: result.height,
+          width: result.width,
         },
       });
       console.log('product:', product);

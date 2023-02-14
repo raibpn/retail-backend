@@ -19,6 +19,8 @@ model Product {
   image String @unique
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+  height Int
+  width Int
 }
 
 model User {

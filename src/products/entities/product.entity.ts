@@ -23,4 +23,10 @@ export class ProductEntity {
 
   @ApiProperty()
   image: string;
+
+  @ApiProperty()
+  height: number;
+
+  @ApiProperty()
+  width: number;
 }
