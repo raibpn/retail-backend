@@ -1,13 +1,14 @@
 import { v2 } from 'cloudinary';
+import process, { env } from 'process';
 import { CLOUDINARY } from './constants';
 
 export const CloudinaryProvider = {
   provide: CLOUDINARY,
   useFactory: (): any => {
     return v2.config({
-      cloud_name: 'daev3vt5w',
-      api_key: '489687321435178',
-      api_secret: '4voUa1X6RGDhc29-pc8Py-QsJl8',
+      cloud_name: env.CLOUD_NAME,
+      api_key: env.API_KEY,
+      api_secret: env.API_SECRET,
     });
   },
 };
