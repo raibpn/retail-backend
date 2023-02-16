@@ -13,7 +13,7 @@ export class ProductEntity {
 
   @ApiProperty()
   @MinLength(2)
-  price: string;
+  price: number;
 
   @ApiProperty()
   createdAt: Date;

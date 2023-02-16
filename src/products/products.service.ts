@@ -26,7 +26,7 @@ export class ProductsService {
           title: CreateProductDto.title,
           description: CreateProductDto.description,
           slug: CreateProductDto.slug,
-          price: CreateProductDto.price,
+          price: +CreateProductDto.price,
           image: result.url,
           height: result.height,
           width: result.width,

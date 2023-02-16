@@ -14,7 +14,7 @@ model Product {
   id String @id @default(auto()) @map("_id") @db.ObjectId
   title String 
   description String 
-  price String
+  price Int
   slug String @unique
   image String @unique
   createdAt DateTime @default(now())

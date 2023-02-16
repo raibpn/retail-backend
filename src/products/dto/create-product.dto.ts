@@ -20,7 +20,7 @@ export class CreateProductDto {
 
   @IsNotEmpty()
   @ApiProperty({ required: true })
-  price: string;
+  price: number;
 
   @IsString()
   @IsNotEmpty()
